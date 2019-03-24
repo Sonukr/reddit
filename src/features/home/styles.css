@@ -24,3 +24,25 @@
 .container {
     padding: 24px;
 }
+
+.listWrapper{
+    background-color: #fff;
+    padding: 12px;
+    border-top: 1px solid #e0e0e0;
+}
+.listWrapper .tagsTitle{
+    margin-bottom: 12px;
+    
+}
+
+img:before{
+    position: absolute;
+    content: '';
+    background-image: url("http://vyfhealth.com/wp-content/uploads/2015/10/yoga-placeholder1.jpg");
+    width: 140px;
+    height: 91px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: 0;
+    background-position-x: 8px;
+}

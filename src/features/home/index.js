@@ -1,16 +1,109 @@
 // @flow
 
 import React, { Component } from 'react';
-import {SearchBar} from '../search'
 import './styles.css';
 import logo from './logo.png';
+import {connect} from 'react-redux';
+import {InputForm} from '../../components/inputForm';
+import {Tag} from '../../components/tag';
+import {SetData} from '../../actions/getData';
+import {Api} from '../../services/api';
+import {ListItem} from '../../components/list';
+
 
 type Props = {
-
+  dispatch: Object,
+  reddits: Object
 }
 
-export class HomePage extends Component<Props>{
+type State = {
+  value: string,
+  tag: string,
+  tags: Array<string>
+}
+
+class HomePageProxy extends Component<Props, State>{
+  constructor(props: Props){
+    super(props);
+    this.state = {
+      value : '',
+      tag: 'alternativeart',
+      tags:  ['alternativeart', 'pics', 'gifs', 'adviceanimals', 'cats',
+        'images', 'photoshopbattles', 'hmmm', 'all', 'aww'],
+    }
+  }
+
+  componentDidMount(): void {
+    this.fetchInitialData();
+  }
+
+
+  fetchInitialData = async () => {
+    const keys = Object.keys(this.props.reddits).sort();
+    const tags = this.state.tags.sort() ;
+
+    console.log(keys, tags)
+    if(JSON.stringify(keys) === JSON.stringify(tags)) {
+      return null;
+    }
+    const data = {
+      ...this.props.reddits
+    };
+    for(let i=0; i< this.state.tags.length; i++) {
+      const resp = await this.dialApi(this.state.tags[i]);
+      data[this.state.tags[i]]= resp.children
+    }
+    this.props.dispatch(new SetData(data).plainAction());
+  }
+
+
+  dialApi = async (tag: string) => {
+    const api = new Api();
+    const resp = await api.get(tag);
+    return resp.data.data;
+  }
+
+  handleOnChange = (e: any) => {
+    if(e.target.value === '') {
+      // debugger;
+      this.setState({
+        value: '',
+        tag: 'adviceanimals'
+      });
+    }else{
+      this.setState({
+        value: e.target.value
+      });
+      console.log('change', this.state)
+    }
+  }
+
+  handleSubmit = async (e: any) => {
+    e.preventDefault();
+    this.setState({
+      tag: this.state.value
+    });
+    const data = {
+      ...this.props.reddits
+    };
+
+    const resp = await this.dialApi(this.state.value);
+    data[this.state.tag]= resp.children
+    this.props.dispatch(new SetData(data).plainAction());
+    console.log('form', this.state)
+  }
+
+  handleTagClick = (item: string) => {
+    console.log(item);
+    this.setState({
+      tag: item
+    })
+  }
+
   render() {
+    const tags = this.state.tags;
+    const listItems = this.props.reddits[this.state.tag] || []
+    console.log(listItems)
     return (
         <div className="App">
           <div  className='menu'>
@@ -23,10 +116,43 @@ export class HomePage extends Component<Props>{
             </ul>
           </div>
           <div className="container">
-            <SearchBar/>
+            <div className="searchBarWrapper">
+              <div className="row ">
+                <div className="col-md-12">
+                  <InputForm value={this.state.value}
+                   onChange={this.handleOnChange} onSubmit={this.handleSubmit}
+                  />
+                </div>
+                <div className="col-md-12">
+                  <div className='d-flex mt-2 align-items-center'>
+                    <p className='tagsTitle'>Quick view for reddit : </p>
+                    <div className='tagWrapper'>
+                      {
+                        tags.map(item => (
+                          <Tag onClick={() => this.handleTagClick(item)}
+                               title={item} isActive={this.state.tag === item}
+                               key={item}
+                          />
+                        ))
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="listWrapper">
+                <p className='tagsTitle'>Showing reddits for : <b>{this.state.tag}</b></p>
+                <ListItem items={listItems}/>
+            </div>
           </div>
 
     </div>
     )
   }
 };
+
+const mapStateToProps = state => ({
+  reddits: state.reddits
+});
+
+export const HomePage = connect(mapStateToProps)(HomePageProxy);
