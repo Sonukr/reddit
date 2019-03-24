@@ -124,7 +124,7 @@ class HomePageProxy extends Component<Props, State>{
                 </div>
                 <div className="col-md-12">
                   <div className='d-flex mt-2 align-items-center'>
-                    <p className='tagsTitle'>Quick view for reddit : </p>
+                    <p className='tagsTitle'>Quick view subreddits : </p>
                     <div className='tagWrapper'>
                       {
                         tags.map(item => (
@@ -140,7 +140,10 @@ class HomePageProxy extends Component<Props, State>{
               </div>
             </div>
             <div className="listWrapper">
-                <p className='tagsTitle'>Showing reddits for : <b>{this.state.tag}</b></p>
+                <div className="d-flex justify-content-between">
+                  <p className='tagsTitle'>Showing subreddits for : <b>{this.state.tag}</b></p>
+                  <p className='tagsTitle'>Total count : <b>{listItems.length}</b></p>
+                </div>
                 <ListItem items={listItems}/>
             </div>
           </div>
