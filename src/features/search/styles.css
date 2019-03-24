@@ -1,1 +1,36 @@
 
+.searchBarWrapper {
+  padding: 12px;
+  background: #fff;
+}
+
+.searchBarWrapper .form-control{
+  width: 91%;
+}
+
+.tagsTitle{
+  margin: 0;
+  margin-right: 12px;
+  font-family: 'Poppins';
+  font-size: 14px;
+  line-height: 1.56;
+  letter-spacing: normal;
+  color: #919aa3;
+}
+
+.tagItem{
+  display: inline-block;
+  margin-right: 8px;
+  cursor: pointer;
+  background-color: #d2d2d2;
+  color: #717b82;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.tagItemActive{
+  background-color: #ff4300;
+  color: #fff;
+  
+}

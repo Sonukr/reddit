@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import {SearchBar} from '../search'
 import './styles.css';
+import logo from './logo.png';
 
 type Props = {
 
@@ -14,13 +15,17 @@ export class HomePage extends Component<Props>{
         <div className="App">
           <div  className='menu'>
             <ul>
-                <li><a  href="/">Home</a></li>
+                <li>
+                  <a  href="/">
+                    <img src={logo} alt=""/>
+                  </a>
+                </li>
             </ul>
           </div>
-          <SearchBar/>
-          <div className='container'>
-            <h2>Home</h2>
+          <div className="container">
+            <SearchBar/>
           </div>
+
     </div>
     )
   }
