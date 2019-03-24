@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import styles from './styles.css';
 
 type Props = {
   items: any
@@ -20,25 +19,26 @@ export class ListItem extends React.Component<Props> {
             {this.props.items.map((item,i) => (
               <div className='listWrapper' key={i}>
                 <div className='listItem'>
-                  {/*{JSON.stringify(item.data)}*/}
                   <div className='imageWrapper'>
-                    <a href={item.data.url} target='_blank'>
+                    <a href={item.data.url} target='_blank' rel="noopener noreferrer">
                       <img src={item.data.thumbnail || item.data.url} alt=""/>
                     </a>
                   </div>
                   <div className='detailsWrapper'>
                     <h4>{item.data.title}
-                      <a href={`https://www.reddit.com/${item.data.permalink}`} target='_blank'> /r/permalink</a>
+                      <a href={`https://www.reddit.com/${item.data.permalink}`} target='_blank' rel="noopener noreferrer"> /r/permalink</a>
                     </h4>
                     <div className='d-flex'>
                       <p><i className="far fa-user"></i>
-                        <a href={`https://www.reddit.com/user/${item.data.author}`} target='_blank'> {item.data.author}</a>
+                        <a href={`https://www.reddit.com/user/${item.data.author}`} target='_blank' rel="noopener noreferrer"> {item.data.author}</a>
                       </p>
-                      <p><i className="far fa-comments"></i> {item.data.num_comments}</p>
+                      <p><a href={`https://www.reddit.com/${item.data.permalink}`} target='_blank' rel="noopener noreferrer">
+                        <i className="far fa-comments"></i> {item.data.num_comments}</a>
+                      </p>
                       <p><i className="far fa-thumbs-up"></i> {item.data.ups}</p>
                       <p><i className="far fa-thumbs-down"></i> {item.data.downs}</p>
                       <p>
-                        <a href={`https://www.reddit.com/${item.data.subreddit_name_prefixed}`} target='_blank'>
+                        <a href={`https://www.reddit.com/${item.data.subreddit_name_prefixed}`} target='_blank' rel="noopener noreferrer">
                           {item.data.subreddit_name_prefixed}
                         </a>
                       </p>
@@ -49,7 +49,6 @@ export class ListItem extends React.Component<Props> {
             ))}
           </div>
         }
-
       </div>
     );
   }

@@ -42,7 +42,6 @@ class HomePageProxy extends Component<Props, State>{
     const keys = Object.keys(this.props.reddits).sort();
     const tags = this.state.tags.sort() ;
 
-    console.log(keys, tags)
     if(JSON.stringify(keys) === JSON.stringify(tags)) {
       return null;
     }
@@ -74,27 +73,28 @@ class HomePageProxy extends Component<Props, State>{
       this.setState({
         value: e.target.value
       });
-      console.log('change', this.state)
     }
   }
 
   handleSubmit = async (e: any) => {
     e.preventDefault();
+    const keys = Object.keys(this.props.reddits);
     this.setState({
       tag: this.state.value
     });
     const data = {
       ...this.props.reddits
     };
-
-    const resp = await this.dialApi(this.state.value);
-    data[this.state.tag]= resp.children
-    this.props.dispatch(new SetData(data).plainAction());
-    console.log('form', this.state)
+    if(keys.indexOf(this.state.value) > -1) {
+      return null;
+    }else{
+      const resp = await this.dialApi(this.state.value);
+      data[this.state.tag]= resp.children
+      this.props.dispatch(new SetData(data).plainAction());
+    }
   }
 
   handleTagClick = (item: string) => {
-    console.log(item);
     this.setState({
       tag: item
     })
@@ -103,7 +103,6 @@ class HomePageProxy extends Component<Props, State>{
   render() {
     const tags = this.state.tags;
     const listItems = this.props.reddits[this.state.tag] || []
-    console.log(listItems)
     return (
         <div className="App">
           <div  className='menu'>

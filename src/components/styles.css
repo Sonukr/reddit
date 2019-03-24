@@ -37,11 +37,26 @@
 
 .listWrapper {
   overflow: scroll;
+  position: relative;
 }
 
 .listItem{
   display: flex;
 }
+
+.bigImageWrapper{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+  right: 0;
+  z-index: 9;
+}
+
+.bigImage {
+  /*display: none;*/
+}
+
 
 .imageWrapper{
   min-width: 140px;
@@ -60,8 +75,6 @@
 
 .detailsWrapper{
   margin: 0 12px;
-  
-  
 }
 
 .detailsWrapper h4{
@@ -75,5 +88,26 @@
 .detailsWrapper h4 a,
 .detailsWrapper p a{
   color: #919aa3;
+}
+
+.detailsWrapper h4 a:hover,
+.detailsWrapper p a:hover{
+  color: #ff4300;
   
+}
+
+/*Bootstrap button overrides*/
+.btn-outline-primary{
+  color: #ff4300;
+  border-color: #ff4300;
+}
+.btn-outline-primary:not(:disabled):not(.disabled).active,
+.btn-outline-primary:not(:disabled):not(.disabled):active,
+.show>.btn-outline-primary.dropdown-toggle,
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #ff4300;
+  border-color: #ff4300;
+  outline: none;
+  box-shadow: none;
 }
