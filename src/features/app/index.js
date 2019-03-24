@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import {
-    BrowserRouter as Router,
-    Route
-} from 'react-router-dom'
 import { HomePage } from '../home';
 // import our Main Reducer
 import { Reducer } from '../../reducer';
@@ -82,9 +78,7 @@ export class Home extends Component {
       <Provider store={this.store}>
           {/* Persistgate delays the rendering of your app's UI until your persisted state has been retrieved and saved to redux. */}
           <PersistGate loading={null} persistor={this.persistor}>
-            <Router>
-                <Route  path="/" component={HomePage}/>
-            </Router>
+            <HomePage/>
           </PersistGate>
       </Provider>
     );
