@@ -1,8 +1,8 @@
 import type { Action } from '../interfaces/action';
 
-export const TYPE_NAME='GET_DATA_FROM_API';
+export const TYPE_NAME='SET_DATA_FROM_API';
 
-export class GetData implements Action {
+export class SetData implements Action {
   +type = TYPE_NAME;
 
   +payload;

@@ -2,22 +2,58 @@
 import * as React from 'react';
 import classnames from 'classnames'
 import './styles.css';
+import {Api} from '../../services/api';
+import {SetData} from '../../actions/getData';
+import { connect } from 'react-redux';
 
 type Props = {
+  dispatch: Object,
+  reddits: Object
+}
+
+type State = {
+  value: string,
+  tag: string,
+  tags: Array<string>
 }
 
 /* features  > SearchBar */
-class SearchBarProxy extends React.Component<Props> {
+class SearchBarProxy extends React.Component<Props, State> {
 
   constructor(props: Props){
     super(props);
     this.state = {
       value : '',
-      tag: ''
+      tag: '',
+      tags:  ['alternativeart', 'pics', 'gifs', 'adviceanimals', 'cats',
+        'images', 'photoshopbattles', 'hmmm', 'all', 'aww']
     }
   }
 
-  handleOnChange = (e) => {
+  componentDidMount(): void {
+    this.fetchInitialData();
+  }
+
+
+  fetchInitialData = async () => {
+    const data = {
+      ...this.props.reddits
+    };
+    for(let i=0; i< this.state.tags.length; i++) {
+      const resp = await this.dialApi(this.state.tags[i]);
+      data[this.state.tags[i]]= resp.children
+    }
+    this.props.dispatch(new SetData(data).plainAction());
+  }
+
+
+  dialApi = async (tag: string) => {
+    const api = new Api();
+    const resp = await api.get(tag);
+    return resp.data.data;
+  }
+
+  handleOnChange = (e: any) => {
     this.setState({
       value: e.target.value,
       tag: ''
@@ -29,7 +65,7 @@ class SearchBarProxy extends React.Component<Props> {
    console.log('form', this.state)
   }
 
-  handleTagClick = (item) => {
+  handleTagClick = (item: string) => {
     console.log(item);
     this.setState({
       tag: item
@@ -38,8 +74,7 @@ class SearchBarProxy extends React.Component<Props> {
 
 
   render () {
-    const tags = ['alternativeart', 'pics', 'gifs', 'adviceanimals', 'cats',
-      'images', 'photoshopbattles', 'hmmm', 'all', 'aww'];
+    const tags = this.state.tags;
     return (
       <div className="searchBarWrapper">
           <div className="row ">
@@ -79,4 +114,8 @@ class SearchBarProxy extends React.Component<Props> {
   }
 }
 
-export const SearchBar = SearchBarProxy;
+const mapStateToProps = state => ({
+  reddits: state.reddits
+});
+
+export const SearchBar = connect(mapStateToProps)(SearchBarProxy);
